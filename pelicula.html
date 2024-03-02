@@ -53,7 +53,10 @@
 			</div>
 			<div class="contenido-interno" id="contenido-interno">
 
-				
+				<script type="module">
+					import {getPelicula} from "/js/pelicula.js";
+					getPelicula();
+				</script>
 
 			</div>
 		</div>
@@ -65,75 +68,6 @@
 			</div>
 		</footer>
 
-		<script type="module">
-			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        	import { getFirestore, getDocs, query, where, collection} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-			
-			const firebaseConfig = {
-				apiKey: "AIzaSyBNHSGGKnkbZwx_VmEcLMsQUXZ7un6GDPI",
-				authDomain: "cinestar-firebase-5d222.firebaseapp.com",
-				databaseURL: "https://cinestar-firebase-5d222-default-rtdb.firebaseio.com",
-				projectId: "cinestar-firebase-5d222",
-				storageBucket: "cinestar-firebase-5d222.appspot.com",
-				messagingSenderId: "26658824738",
-				appId: "1:26658824738:web:11bedae2674da7d218e07b"
-			};
-
-			const app = initializeApp(firebaseConfig);
-			const db = getFirestore(app);
-			
-			if (app && db) {
-				console.log("Firebase y Firestore se han inicializado correctamente.");
-			} else {
-				console.error("Error al inicializar Firebase o Firestore.");
-			}
-
-			const getPelicula = async () => {
-				let id = new URLSearchParams(window.location.search).get('id');
-				const peliculas = await getDocs(query(collection(db, 'peliculas'), where('id', '==', `${id}`)));
-
-				peliculas.forEach((doc) => {
-					const pelicula = doc.data();
-					let html = `
-						<br/><h1>Cartelera</h1><br/>
-						<div class="contenido-pelicula">
-							<div class="datos-pelicula">
-								<h2>${pelicula.Titulo}</h2>
-								<p>${pelicula.Sinopsis}</p>
-								<br/>
-								<div class="tabla">
-									<div class="fila">
-										<div class="celda-titulo">Título Original :</div>
-										<div class="celda">${pelicula.Titulo}</div>
-									</div>
-									<div class="fila">
-										<div class="celda-titulo">Estreno :</div>
-										<div class="celda">${pelicula.FechaEstrenoss}</div>
-									</div>
-									<div class="fila">
-										<div class="celda-titulo">Género :</div>
-										<div class="celda">${pelicula.Geneross}</div>
-									</div>
-									<div class="fila">
-										<div class="celda-titulo">Director :</div>
-										<div class="celda">${pelicula.Director}</div>
-									</div>
-									<div class="fila">
-										<div class="celda-titulo">Reparto :</div>
-										<div class="celda">${pelicula.Reparto}Reparto</div>
-									</div>
-								</div>
-							</div>
-							<img src="img/pelicula/${pelicula.id}.jpg" width="160" height="226"><br/><br/>
-						</div>
-						<div class="pelicula-video">
-							<embed src="https://www.youtube.com/v/${pelicula.Link}" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="580" height="400">
-						</div>
-					`;
-					document.getElementById('contenido-interno').innerHTML = html;
-				});
-			}
-			getPelicula()
-		</script>
+		
 	</body>
 </html>
