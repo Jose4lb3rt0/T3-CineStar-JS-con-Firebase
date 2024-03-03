@@ -15,10 +15,12 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const getPeliculas = async()=>{
+
     let id = new URLSearchParams(window.location.search).get('id')
     id = id == 'cartelera' ? 1 : id == 'estrenos' ? 2 : 0
     const consulta = query(collection(db, 'peliculas'), where('idEstado', '==', `${id}`), orderBy('id'));
     const peliculas = await getDocs(consulta) //collection(db, 'peliculas') //consulta
+
     let html = `<br/><h1>Cartelera</h1><br/>`
     peliculas.forEach((doc)=>{
         let pelicula = doc.data()

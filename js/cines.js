@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, getDocs} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection,  getDocs,query,orderBy} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBNHSGGKnkbZwx_VmEcLMsQUXZ7un6GDPI",
@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const getCines = async () => {
-    const consulta = collection(db, 'cines');
+    const consulta = query(collection(db, 'cines'), orderBy('id'));
     const cines = await getDocs(consulta);
     let html = `<br/><h1>Nuestros Cines</h1><br/>`;
     cines.forEach((doc) => {
@@ -28,7 +28,7 @@ export const getCines = async () => {
                     <span>${cine.Direccion} - ${cine.Detalle}<br/><br/>Teléfono: ${cine.Telefonos}</span>
                 </div>
                 <br/>
-                <a href="http://www.cinestar.com.pe/multicines/cine/${cine.RazonSocial}">
+                <a href="cine.html?id=${cine.id}">
                     <img src="img/varios/ico-info2.png" width="150" height="40"/>
                 </a>
             </div>`;
